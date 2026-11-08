@@ -142,3 +142,44 @@ There are two roles, Organiser and Participant, chosen when registering. Passwor
 - Organiser: `/Organiser/Dashboard`, `/ManageEvents` (create, edit, delete), `/ManageCategories?eventId=`, `/Organiser/Enrolments?eventId=`, `/Organiser/Results?eventId=`
 - Participant: `/MyEvents`, `/MyResults`
 - Both roles: `/Profile`
+
+## API endpoints
+
+Authentication
+- `POST /api/auth/register` - public
+- `POST /api/auth/login` - public, starts the session
+- `POST /api/auth/logout` - ends the session
+
+User profile
+- `GET /api/users/me` - any logged-in user
+- `PUT /api/users/me` - any logged-in user
+- `POST /api/users/me/profile-picture` - any logged-in user
+
+Events
+- `GET /api/events` - public, with optional filters `search`, `eventType`, `province` and `upcomingOnly`
+- `GET /api/events/mine` - Organiser, their own events with category and enrolment counts
+- `GET /api/events/{id}` - public
+- `POST /api/events` - Organiser
+- `PUT /api/events/{id}` - Organiser who owns the event
+- `DELETE /api/events/{id}` - Organiser who owns the event
+- `POST /api/events/{eventId}/banner` - Organiser who owns the event
+
+Categories
+- `GET /api/events/{eventId}/categories` - public
+- `POST /api/events/{eventId}/categories` - Organiser who owns the event
+- `PUT /api/categories/{id}` - Organiser who owns the event
+- `DELETE /api/categories/{id}` - Organiser who owns the event
+
+Enrolments
+- `POST /api/categories/{categoryId}/enrol` - Participant
+- `GET /api/enrolments/me` - Participant, including the event for each enrolment
+- `GET /api/events/{eventId}/enrolments` - Organiser who owns the event, including any captured result
+- `DELETE /api/enrolments/{id}` - Participant who made the enrolment
+
+Results
+- `POST /api/enrolments/{enrolmentId}/result` - Organiser who owns the event
+- `PUT /api/results/{id}` - Organiser who owns the event
+- `GET /api/results/me` - Participant, including event details and the total number of finishers in the category
+- `GET /api/events/{eventId}/results` - public
+
+Every endpoint is described in Swagger, with who can call it, the input it expects and every response it can return.
