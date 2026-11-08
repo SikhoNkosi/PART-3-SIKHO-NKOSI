@@ -72,3 +72,20 @@ Project structure:
 - `docker-compose.yml` - starts the database, API and website together
 - `.env.example` - a template for the private `.env` settings file
 - `.github/workflows/ci.yml` - the continuous integration workflow
+
+## Run with Docker
+
+You need Docker Desktop installed and running. Ports 8080 and 5141 must be free.
+
+1. Clone this repository and open a terminal in the repository folder (the one containing `docker-compose.yml`).
+2. Optional, for image uploads: copy `.env.example` to a new file called `.env` and put your Azure Blob Storage connection string after `AZURE_STORAGE_CONNECTION_STRING=`. In PowerShell: `Copy-Item .env.example .env`. Without it, everything works except uploading banner and profile pictures, which shows a friendly message.
+3. Start everything with one command:
+
+```
+docker compose up --build
+```
+
+When the logs show both the API and the website listening, open:
+
+- The website: http://localhost:8080
+- The API and its Swagger page: http://localhost:5141/swagger
