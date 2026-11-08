@@ -95,3 +95,11 @@ Notes:
 - The API creates its own database tables when it starts. While SQL Server is waking up you may see "The database is not ready yet" messages. This is normal.
 - To stop, press Ctrl+C and run `docker compose down`. Your data is kept in a Docker volume.
 - To delete all data and start fresh, run `docker compose down -v`.
+
+## Run locally in Visual Studio
+
+You need Visual Studio with the ASP.NET workload, the .NET 10 SDK and SQL Server LocalDB (installed with Visual Studio).
+
+1. Open `RaceDay.API.slnx`.
+2. Right-click the solution, choose Properties, then Multiple startup projects, and set both `RaceDay.API` and `RaceDay.Web` to Start.
+3. For image uploads, right-click `RaceDay.API`, choose Manage User Secrets, and add your connection string:
