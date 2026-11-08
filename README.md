@@ -61,3 +61,14 @@ Browser  -->  RaceDay.Web (MVC website)  -->  RaceDay.API (REST API)  -->  SQL S
 - The website never touches the database and contains no copied business logic. Every read and write goes through the API.
 - The website never talks to Azure. Images are sent to the API, which stores them in Azure Blob Storage.
 - In Docker, three containers run together: SQL Server, the API and the website.
+
+Project structure:
+
+- `RaceDay.API.slnx` - the Visual Studio solution
+- `RaceDay.API/` - the Web API (controllers, models, EF Core context, migrations, session authentication, Azure image storage)
+- `RaceDay.Web/` - the MVC website (controllers, views, the API client, the RaceDay theme)
+- `RaceDay.API.Tests/` - the xUnit tests
+- `api.Dockerfile` and `web.Dockerfile` - one Dockerfile per application
+- `docker-compose.yml` - starts the database, API and website together
+- `.env.example` - a template for the private `.env` settings file
+- `.github/workflows/ci.yml` - the continuous integration workflow
