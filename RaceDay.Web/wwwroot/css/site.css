@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* ---------- RaceDay brand colours and fonts ---------- */
+:root {
+    --rd-black: #0e1116;
+    --rd-charcoal: #1b2028;
+    --rd-orange: #ff5a1f;
+    --rd-orange-dark: #e04a12;
+    --rd-amber: #ffb020;
+    --rd-bg: #f4f5f7;
+    --rd-text: #1f2933;
+    --rd-display: 'Barlow Condensed', 'Arial Narrow', 'Segoe UI', sans-serif;
+    --bs-link-color: #e04a12;
+    --bs-link-color-rgb: 224, 74, 18;
+    --bs-link-hover-color: #b93a0c;
+    --bs-link-hover-color-rgb: 185, 58, 12;
+}
+
+/* ---------- Page ---------- */
+html {
+    font-size: 15px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--rd-text);
+    background-color: var(--rd-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* The main content grows so the footer always sits at the bottom */
+    body > .container {
+        flex: 1 0 auto;
+    }
+
+/* ---------- Headings ---------- */
+h1, h2, h3, .display-4, .display-5, .display-6 {
+    font-family: var(--rd-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+}
+
+h4, h5, h6 {
+    font-weight: 600;
+}
+
+dt {
+    font-weight: 600;
+}
+
+/* ---------- Navigation bar ---------- */
+.navbar.bg-dark {
+    background-color: var(--rd-black) !important;
+    border-bottom: 3px solid var(--rd-orange);
+}
+
+.navbar-brand {
+    font-family: var(--rd-display);
+    font-size: 1.7rem;
+    letter-spacing: .08em;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    font-weight: 500;
+}
+
+    .navbar-dark .navbar-nav .nav-link:hover,
+    .navbar-dark .navbar-nav .nav-link:focus {
+        color: var(--rd-orange);
+    }
+
+/* ---------- Footer ---------- */
+footer.footer,
+footer.footer .container {
+    background-color: var(--rd-black);
+    color: #9ca3af !important;
+}
+
+footer.footer {
+    border-top: 3px solid var(--rd-orange) !important;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    font-weight: 600;
+    border-radius: .55rem;
+}
+
+.btn-warning {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--rd-orange);
+    --bs-btn-border-color: var(--rd-orange);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--rd-orange-dark);
+    --bs-btn-hover-border-color: var(--rd-orange-dark);
+    --bs-btn-focus-shadow-rgb: 255, 90, 31;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #c93f0b;
+    --bs-btn-active-border-color: #c93f0b;
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--rd-orange);
+    --bs-btn-disabled-border-color: var(--rd-orange);
+}
+
+.btn-outline-dark:hover {
+    background-color: var(--rd-charcoal);
+}
+
+.text-warning {
+    color: var(--rd-orange) !important;
+}
+
+/* ---------- Cards ---------- */
+.card {
+    border: 0;
+    border-radius: .9rem;
+    overflow: hidden;
+}
+
+    .card.h-100 {
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+        .card.h-100:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 .6rem 1.2rem rgba(0, 0, 0, .12) !important;
+        }
+
+.card-footer {
+    border-top: 0;
+}
+
+/* Dashboard numbers */
+.card .display-6 {
+    color: var(--rd-orange);
+}
+
+/* Banner placeholder shown when an event has no image */
+.card > .bg-dark.text-warning {
+    font-family: var(--rd-display);
+    text-transform: uppercase;
+    background-image: linear-gradient(135deg, rgba(255, 90, 31, .28), rgba(14, 17, 22, 0) 65%), repeating-linear-gradient(115deg, transparent 0 22px, rgba(255, 255, 255, .05) 22px 34px);
+}
+
+/* ---------- Tables ---------- */
+.table > thead th {
+    text-transform: uppercase;
+    font-size: .72rem;
+    letter-spacing: .07em;
+    color: #6b7280;
+    border-bottom-width: 2px;
+    white-space: nowrap;
+}
+
+/* ---------- Badges and alerts ---------- */
+.badge {
+    font-weight: 600;
+    letter-spacing: .02em;
+}
+
+.alert {
+    border: 0;
+    border-radius: .7rem;
+}
+
+/* ---------- Forms ---------- */
+.form-label {
+    font-weight: 600;
+    font-size: .9rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: .55rem;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--rd-orange);
+        box-shadow: 0 0 0 .2rem rgba(255, 90, 31, .2);
+    }
+
+.form-check-input:checked {
+    background-color: var(--rd-orange);
+    border-color: var(--rd-orange);
+}
+
+.form-check-input:focus {
+    border-color: var(--rd-orange);
+    box-shadow: 0 0 0 .2rem rgba(255, 90, 31, .2);
+}
+
+/* ---------- Home page hero ---------- */
+.hero {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    border-radius: 1rem;
+    background-color: var(--rd-black);
+    background-image: linear-gradient(90deg, rgba(14, 17, 22, 1) 0%, rgba(14, 17, 22, .88) 50%, rgba(14, 17, 22, .15) 100%), repeating-linear-gradient(115deg, transparent 0 26px, rgba(255, 90, 31, .95) 26px 38px, transparent 38px 76px);
+}
+
+    /* Checkered finish-line strip along the bottom of the hero */
+    .hero::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 14px;
+        background: repeating-conic-gradient(#111 0% 25%, #fff 0% 50%) 0 0 / 14px 14px;
+    }
+
+    .hero .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 640px;
+        padding-bottom: .75rem;
+    }
+
+@media (max-width: 576px) {
+    .hero {
+        padding: 2rem 1.25rem !important;
+    }
+}
+
+/* ---------- Event type tiles on the home page ---------- */
+.type-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .25rem;
+    padding: 1.1rem .5rem;
+    border-radius: .9rem;
+    background: #fff;
+    color: var(--rd-text);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 4px solid var(--rd-orange);
+    box-shadow: 0 .125rem .35rem rgba(0, 0, 0, .08);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+    .type-tile:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 .6rem 1.2rem rgba(0, 0, 0, .12);
+        color: var(--rd-orange-dark);
+    }
+
+    .type-tile .type-emoji {
+        font-size: 2rem;
+        line-height: 1;
+    }
+
+/* ---------- "How it works" steps ---------- */
+.step-number {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--rd-orange);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+}

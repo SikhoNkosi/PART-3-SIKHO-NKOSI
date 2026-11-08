@@ -1,0 +1,166 @@
+﻿@model HomeViewModel
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Upcoming events";
+    var isLoggedIn = Context.Session.GetInt32("UserId") != null;
+    var fullName = Context.Session.GetString("FullName");
+    var provinces = new[] { "Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "Northern Cape", "North West", "Western Cape" };
+    var eventTypes = new[] { "Run", "Walk", "Cycle" };
+    var filtersActive = !string.IsNullOrWhiteSpace(Model.Search)
+                        || !string.IsNullOrWhiteSpace(Model.EventType)
+                        || !string.IsNullOrWhiteSpace(Model.Province);
+}
+
+<div class="hero p-5 mb-4">
+    <div class="hero-content">
+        <h1 class="display-4 fw-bold">Find your next race</h1>
+        <p class="lead mb-4">Running, walking and cycling events across South Africa. Pick one, choose a category and you're in.</p>
+
+        @if (isLoggedIn)
+        {
+            <p class="mb-0 fs-5">Welcome back, <strong>@fullName</strong>.</p>
+        }
+        else
+        {
+            <a class="btn btn-warning btn-lg me-2" asp-controller="Account" asp-action="Register">Create an account</a>
+            <a class="btn btn-outline-light btn-lg" asp-controller="Account" asp-action="Login">Log in</a>
+        }
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-4">
+        <a class="type-tile" asp-controller="Home" asp-action="Index" asp-route-eventType="Run">
+            <span class="type-emoji">🏃</span>
+            <span>Runs</span>
+        </a>
+    </div>
+    <div class="col-4">
+        <a class="type-tile" asp-controller="Home" asp-action="Index" asp-route-eventType="Walk">
+            <span class="type-emoji">🚶</span>
+            <span>Walks</span>
+        </a>
+    </div>
+    <div class="col-4">
+        <a class="type-tile" asp-controller="Home" asp-action="Index" asp-route-eventType="Cycle">
+            <span class="type-emoji">🚴</span>
+            <span>Cycles</span>
+        </a>
+    </div>
+</div>
+
+@if (!isLoggedIn)
+{
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="d-flex align-items-start gap-3">
+                <span class="step-number">1</span>
+                <div>
+                    <div class="fw-semibold">Create an account</div>
+                    <div class="text-muted small">Sign up as a participant in under a minute.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex align-items-start gap-3">
+                <span class="step-number">2</span>
+                <div>
+                    <div class="fw-semibold">Pick an event and a category</div>
+                    <div class="text-muted small">Choose the distance or age group that suits you.</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="d-flex align-items-start gap-3">
+                <span class="step-number">3</span>
+                <div>
+                    <div class="fw-semibold">Race and track your results</div>
+                    <div class="text-muted small">Your finish time and position appear in My Results.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<form method="get" asp-controller="Home" asp-action="Index" class="card card-body shadow-sm mb-4">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label" for="search">Search</label>
+            <input id="search" name="search" class="form-control" value="@Model.Search" placeholder="Event name or place" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" for="eventType">Event type</label>
+            <select id="eventType" name="eventType" class="form-select">
+                <option value="">All types</option>
+                @foreach (var t in eventTypes)
+                {
+                    <option value="@t" selected="@(Model.EventType == t)">@t</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" for="province">Province</label>
+            <select id="province" name="province" class="form-select">
+                <option value="">All provinces</option>
+                @foreach (var p in provinces)
+                {
+                    <option value="@p" selected="@(Model.Province == p)">@p</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-warning">Filter</button>
+        </div>
+    </div>
+    @if (filtersActive)
+    {
+        <div class="mt-2"><a asp-action="Index" class="small">Clear filters</a></div>
+    }
+</form>
+
+<h3 class="mb-3">Upcoming events</h3>
+
+@if (Model.Events.Count == 0)
+{
+    <div class="alert alert-info">
+        @(filtersActive
+            ? "No upcoming events match those filters. Try changing or clearing them."
+            : "There are no upcoming events right now. Please check back soon.")
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var e in Model.Events)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    @if (!string.IsNullOrEmpty(e.BannerImageUrl))
+                    {
+                        <img src="@e.BannerImageUrl" class="card-img-top" alt="Banner for @e.EventName"
+                             style="height:170px;object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div class="bg-dark text-warning d-flex align-items-center justify-content-center fw-bold"
+                             style="height:170px;font-size:2rem;letter-spacing:2px;">
+                            RACEDAY
+                        </div>
+                    }
+
+                    <div class="card-body">
+                        <h5 class="card-title">@e.EventName</h5>
+                        <p class="mb-1 text-muted">@e.EventDate.ToString("ddd d MMM yyyy, HH:mm")</p>
+                        <p class="mb-2">@(string.IsNullOrEmpty(e.Province) ? e.Location : e.Location + ", " + e.Province)</p>
+                        <span class="badge bg-secondary">@e.EventType</span>
+                        <span class="badge bg-light text-dark border">@e.Distance km</span>
+                    </div>
+
+                    <div class="card-footer bg-white">
+                        <a class="btn btn-warning w-100" asp-controller="Events" asp-action="Details" asp-route-id="@e.EventId">View details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

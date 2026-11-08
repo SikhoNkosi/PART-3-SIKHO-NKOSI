@@ -1,0 +1,12 @@
+@model string
+@{
+    var status = Model ?? string.Empty;
+    var css = status switch
+    {
+        "Confirmed" => "bg-success",
+        "Pending" => "bg-warning text-dark",
+        "Cancelled" => "bg-danger",
+        _ => "bg-secondary"
+    };
+}
+<span class="badge @css">@status</span>

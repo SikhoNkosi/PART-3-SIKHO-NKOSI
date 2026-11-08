@@ -1,0 +1,70 @@
+@model EventEnrolmentsViewModel
+@{
+    ViewData["Title"] = "Results";
+}
+
+<div class="mb-3">
+    <a asp-action="Dashboard" class="text-decoration-none">&larr; Back to dashboard</a>
+</div>
+
+<h2 class="mb-1">Results</h2>
+<p class="text-muted">@Model.EventName, @Model.EventDate.ToString("d MMM yyyy, HH:mm")</p>
+
+@if (Model.EventDate > DateTime.Now)
+{
+    <div class="alert alert-warning">This event hasn't taken place yet. Results are normally entered after the event has finished.</div>
+}
+
+@if (Model.Enrolments.Count == 0)
+{
+    <div class="alert alert-info">Nobody has enrolled for this event, so there are no results to enter.</div>
+}
+else
+{
+    <p class="text-muted">Type each participant's finish time as hours:minutes:seconds (for example 0:52:14) and their finishing position, then click Save. Saved results are visible to participants and the public.</p>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Participant</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th style="width:150px;">Finish time</th>
+                        <th style="width:110px;">Position</th>
+                        <th style="width:110px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.Enrolments)
+                    {
+                        var timeText = row.FinishTime.HasValue ? row.FinishTime.Value.ToString(@"h\:mm\:ss") : "";
+
+                        <tr>
+                            <td>@row.ParticipantName</td>
+                            <td>@row.CategoryName</td>
+                            <td><partial name="_StatusBadge" model="row.Status" /></td>
+                            <td>
+                                <input form="form-@row.EnrolmentId" name="FinishTime" class="form-control form-control-sm"
+                                       placeholder="0:52:14" value="@timeText" />
+                            </td>
+                            <td>
+                                <input form="form-@row.EnrolmentId" name="Position" type="number" min="1"
+                                       class="form-control form-control-sm" value="@row.Position" />
+                            </td>
+                            <td>
+                                <form id="form-@row.EnrolmentId" asp-action="SaveResult" method="post">
+                                    <input type="hidden" name="EventId" value="@Model.EventId" />
+                                    <input type="hidden" name="EnrolmentId" value="@row.EnrolmentId" />
+                                    <input type="hidden" name="ResultId" value="@row.ResultId" />
+                                    <button type="submit" class="btn btn-sm btn-warning">@(row.ResultId.HasValue ? "Update" : "Save")</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
