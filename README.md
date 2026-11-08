@@ -103,3 +103,15 @@ You need Visual Studio with the ASP.NET workload, the .NET 10 SDK and SQL Server
 1. Open `RaceDay.API.slnx`.
 2. Right-click the solution, choose Properties, then Multiple startup projects, and set both `RaceDay.API` and `RaceDay.Web` to Start.
 3. For image uploads, right-click `RaceDay.API`, choose Manage User Secrets, and add your connection string:
+
+```json
+{
+  "AzureStorage": {
+    "ConnectionString": "YOUR-AZURE-CONNECTION-STRING"
+  }
+}
+```
+
+4. Press F5. The API creates the `RaceDayDB` database on LocalDB by itself using its EF Core migrations, and the website opens in your browser.
+
+The API's Swagger page is at https://localhost:7083/swagger. The database connection string is in `RaceDay.API/appsettings.json`, and the address the website uses to reach the API is `ApiSettings:BaseUrl` in `RaceDay.Web/appsettings.json`.
