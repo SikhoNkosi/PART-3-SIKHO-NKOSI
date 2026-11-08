@@ -89,3 +89,9 @@ When the logs show both the API and the website listening, open:
 
 - The website: http://localhost:8080
 - The API and its Swagger page: http://localhost:5141/swagger
+
+Notes:
+- The first run downloads images and builds both applications, which can take 5 to 15 minutes. Later runs take seconds.
+- The API creates its own database tables when it starts. While SQL Server is waking up you may see "The database is not ready yet" messages. This is normal.
+- To stop, press Ctrl+C and run `docker compose down`. Your data is kept in a Docker volume.
+- To delete all data and start fresh, run `docker compose down -v`.
