@@ -115,3 +115,15 @@ You need Visual Studio with the ASP.NET workload, the .NET 10 SDK and SQL Server
 4. Press F5. The API creates the `RaceDayDB` database on LocalDB by itself using its EF Core migrations, and the website opens in your browser.
 
 The API's Swagger page is at https://localhost:7083/swagger. The database connection string is in `RaceDay.API/appsettings.json`, and the address the website uses to reach the API is `ApiSettings:BaseUrl` in `RaceDay.Web/appsettings.json`.
+
+## Azure Blob Storage
+
+Banner images and profile pictures are stored in Azure Blob Storage.
+
+To set it up: create a storage account in the Azure portal, create a container called `raceday-images` with the anonymous access level set to Blob (so the images can be shown on web pages), and copy the connection string from the Access keys page. Use it as `AZURE_STORAGE_CONNECTION_STRING` in `.env` (Docker) or in User Secrets (local). The connection string is a secret and is never committed to this repository.
+
+How an upload works:
+1. The user picks an image on the website.
+2. The website sends the file to the API (`POST /api/events/{eventId}/banner` or `POST /api/users/me/profile-picture`).
+3. The API checks the file (JPG, PNG or WEBP, up to 5 MB), uploads it to the container and saves its web address in the database.
+4. The website shows the image using that stored address.
