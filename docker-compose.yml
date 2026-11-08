@@ -1,0 +1,44 @@
+name: raceday
+
+services:
+  # The database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${SQL_SA_PASSWORD:-RaceDay2026Strong}
+    volumes:
+      - sqldata:/var/opt/mssql
+
+  # The RaceDay API (Swagger is at http://localhost:5141/swagger)
+  api:
+    build:
+      context: .
+      dockerfile: api.Dockerfile
+    depends_on:
+      - sqlserver
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      TZ: Africa/Johannesburg
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=RaceDayDB;User Id=sa;Password=${SQL_SA_PASSWORD:-RaceDay2026Strong};TrustServerCertificate=True"
+      AzureStorage__ConnectionString: "${AZURE_STORAGE_CONNECTION_STRING:-}"
+      AzureStorage__ContainerName: raceday-images
+    ports:
+      - "5141:8080"
+
+  # The RaceDay website (open http://localhost:8080)
+  web:
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+    depends_on:
+      - api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      TZ: Africa/Johannesburg
+      ApiSettings__BaseUrl: http://api:8080/
+    ports:
+      - "8080:8080"
+
+volumes:
+  sqldata:
