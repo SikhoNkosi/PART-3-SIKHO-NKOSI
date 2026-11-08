@@ -183,3 +183,52 @@ Results
 - `GET /api/events/{eventId}/results` - public
 
 Every endpoint is described in Swagger, with who can call it, the input it expects and every response it can return.
+
+## Unit tests
+
+There are more than 90 xUnit tests. They start the real API inside the test run using `WebApplicationFactory`, with an in-memory database and a fake image store, so they need no SQL Server and no Azure. Each test covers a success case or a failure case.
+
+They cover registration, login, logout, hashed passwords and the server-side session; event management and ownership rules; categories; role enforcement (the wrong role and logged-out users are rejected); enrolments; results; the event filters and Organiser dashboard data; and image uploads, including files that are too large or the wrong type.
+
+Run them in Visual Studio with Test > Test Explorer > Run All Tests, or from the repository folder with:
+
+```
+dotnet test RaceDay.API.slnx
+```
+
+## Continuous integration
+
+The GitHub Actions workflow in `.github/workflows/ci.yml` runs on every push. It validates the repository structure, restores packages, builds the whole solution, runs all the unit tests and builds both Docker images with `docker compose build`.
+
+## Docker details
+
+- Each application has its own Dockerfile (`api.Dockerfile` and `web.Dockerfile`) with two stages: a build stage using the .NET SDK image, and a small runtime stage using the ASP.NET image.
+- The project file is copied and restored first, in its own step, so package downloads are cached between builds.
+- The applications run as the non-root user that comes with the image, and listen on port 8080 inside the container.
+- All settings (database connection, Azure connection string, API address) are passed in as environment variables, and no secrets are baked into the images.
+- `docker-compose.yml` starts SQL Server (with a named volume so data survives restarts), the API and the website, and a `.dockerignore` file keeps build output out of the build.
+- The containerised application behaves the same as the local one. The only difference is that Docker uses its own SQL Server container, so it starts with its own fresh database.
+
+## Design decisions and differences
+
+- The Event entity has `Distance` and `EventType` fields. They were required in Part 2 and were not in the Part 1 ERD.
+- Events also have a `BannerImageUrl` and users have a `ProfilePictureUrl`, added in Part 3 for the Azure images.
+- Authentication uses server-side sessions, as the project requires, rather than tokens.
+- `POST /api/auth/logout` was added because it is needed to end a session.
+- The Payment entity exists in the database to match the Part 1 ERD, but has no endpoints, as in the Part 1 endpoint plan.
+- Capturing a second result for the same enrolment returns 409 Conflict.
+- The API gained `GET /api/events/mine`, event filters, and richer enrolment and result responses to support the website.
+- "Position out of total finishers" counts the finishers with a recorded time in the same category.
+- The website reads and writes numbers and dates in one fixed format, so distances like 10.5 work whatever the computer's regional settings are.
+- The API applies its database migrations when it starts, which is how the Docker database gets its tables.
+
+## Known limitations
+
+- Sessions are kept in memory, so restarting an application logs its users out.
+- Entry fees are shown but no payment is taken.
+- An event or category that already has enrolments can't be deleted. The website disables the Delete button for them.
+- The number of places in a category is shown but not enforced.
+
+## Author
+
+Sikho Nkosi - PROG6212 Portfolio of Evidence, Part 3
