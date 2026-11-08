@@ -49,3 +49,15 @@ This repository is **Part 3** of the PROG6212 Portfolio of Evidence. It contains
 - Logging out clears the session, and logged-out users are redirected to the login page
 - A consistent RaceDay theme built with Bootstrap, with colour-coded statuses (green Confirmed, amber Pending, red Cancelled)
 - Friendly messages for invalid input and for problems reaching the server, never raw error text
+
+## How the system fits together
+
+```
+Browser  -->  RaceDay.Web (MVC website)  -->  RaceDay.API (REST API)  -->  SQL Server
+                                                      |
+                                                      +--> Azure Blob Storage (images)
+```
+
+- The website never touches the database and contains no copied business logic. Every read and write goes through the API.
+- The website never talks to Azure. Images are sent to the API, which stores them in Azure Blob Storage.
+- In Docker, three containers run together: SQL Server, the API and the website.
