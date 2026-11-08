@@ -8,7 +8,8 @@ This repository is **Part 3** of the PROG6212 Portfolio of Evidence. It contains
 
 **Video presentation:** [...........)
 
-![CI passing](........)
+![CI passing](<img width="959" height="417" alt="Screenshot 2026-11-09 002034" src="https://github.com/user-attachments/assets/5bc63a9d-1b97-4bb0-b018-7f5f95b4a6db" />
+)
 
 ## Contents
 
