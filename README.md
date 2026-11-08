@@ -127,3 +127,18 @@ How an upload works:
 2. The website sends the file to the API (`POST /api/events/{eventId}/banner` or `POST /api/users/me/profile-picture`).
 3. The API checks the file (JPG, PNG or WEBP, up to 5 MB), uploads it to the container and saves its web address in the database.
 4. The website shows the image using that stored address.
+
+## Authentication and roles
+
+There are two roles, Organiser and Participant, chosen when registering. Passwords are hashed with BCrypt and never stored in plain text.
+
+**In the API:** logging in creates a server-side session that stores the user's ID and role, and the browser holds only a session cookie. A custom authentication handler reads the session on every request, and endpoints use role checks such as `[Authorize(Roles = "Organiser")]`. Some endpoints also check ownership, so an Organiser can only change their own events, categories and results, and a Participant can only cancel their own enrolments. A request with no session gets 401, and the wrong role or someone else's resource gets 403.
+
+**In the website:** the website keeps its own server-side session that stores the user's ID, role and name, plus the API's session cookie, which it sends with every call to the API so the API treats the request as that user. Logging out ends the API session and clears the website session. Pages are protected by a filter: logged-out users are redirected to the login page (and returned to the page they wanted after logging in), and the wrong role sees an "access denied" page. If the API is restarted and the session is lost, the website sends the user back to the login page with a clear message.
+
+## Website pages
+
+- Everyone: `/` (upcoming events with filters), `/Events/Details/{id}`, `/Account/Login`, `/Account/Register`
+- Organiser: `/Organiser/Dashboard`, `/ManageEvents` (create, edit, delete), `/ManageCategories?eventId=`, `/Organiser/Enrolments?eventId=`, `/Organiser/Results?eventId=`
+- Participant: `/MyEvents`, `/MyResults`
+- Both roles: `/Profile`
