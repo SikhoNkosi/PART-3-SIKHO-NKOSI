@@ -9,3 +9,19 @@ This repository is **Part 3** of the PROG6212 Portfolio of Evidence. It contains
 **Video presentation:** [...........)
 
 ![CI passing](........)
+
+## Contents
+
+- [Features](#features)
+- [How the system fits together](#how-the-system-fits-together)
+- [Run with Docker](#run-with-docker)
+- [Run locally in Visual Studio](#run-locally-in-visual-studio)
+- [Azure Blob Storage](#azure-blob-storage)
+- [Authentication and roles](#authentication-and-roles)
+- [Website pages](#website-pages)
+- [API endpoints](#api-endpoints)
+- [Unit tests](#unit-tests)
+- [Continuous integration](#continuous-integration)
+- [Docker details](#docker-details)
+- [Design decisions and differences](#design-decisions-and-differences)
+- [Known limitations](#known-limitations)
