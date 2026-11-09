@@ -6,7 +6,7 @@ RaceDay is a full-stack event management platform for the South African road run
 
 This repository is **Part 3** of the PROG6212 Portfolio of Evidence. It contains everything built across the project: the RESTful API (Part 2, extended in Part 3), the ASP.NET Core MVC website, the unit tests, the Docker setup and the CI workflow.
 
-**Video presentation:** [...........)
+**Video presentation:** [https://youtu.be/fOeiWXRnJCM)
 
 ![CI passing]
 <img width="959" height="417" alt="Screenshot 2026-11-09 002034" src="https://github.com/user-attachments/assets/173dd0b8-d0ce-4db4-b388-e45fe8248551" />
